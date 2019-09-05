@@ -1,9 +1,10 @@
 # Sort, rename, filter input scaffolds using funannotate and mask repeats.
 
 rule clean_assembly:
-  input: samples.genome[samples.strain=='{strain}']
+  input: lambda w: samples.genome[samples.index== f'{w.strain}']
   output: join(TMP, 'clean', '01_{strain}_clean.fa')
-  singularity: "docker://cmdoret/funannotate:latest"
+  singularity: "docker://cmdoret/funannotate:1.5.3"
+  threads: CPUS
   shell:
     """
     funannotate clean -i {input} -o {output}
@@ -12,7 +13,7 @@ rule clean_assembly:
 rule sort_assembly:
   input: join(TMP, 'clean', '01_{strain}_clean.fa')
   output: join(TMP, 'clean', '02_{strain}_sorted.fa')
-  singularity: "docker://cmdoret/funannotate:latest"
+  singularity: "docker://cmdoret/funannotate:1.5.3"
   shell:
     """
     funannotate sort -i {input} \
@@ -22,7 +23,7 @@ rule sort_assembly:
 rule mask_assembly:
   input: join(TMP, 'clean', '02_{strain}_sorted.fa')
   output: join(TMP, 'clean', '03_{strain}_masked.fa')
-  singularity: "docker://cmdoret/funannotate:latest"
+  singularity: "docker://cmdoret/funannotate:1.5.3"
   threads: CPUS
   shell:
     """

@@ -7,7 +7,7 @@ rule annotate:
     predict_dir = lambda w: join(TMP, 'predict', f'{w.strain}'),
     id = lambda w: f"Acanthamoeba_castellanii_{w.strain}"
   threads: CPUS
-  singularity: "docker://cmdoret/funannotate:latest"
+  singularity: "docker://cmdoret/funannotate:1.5.3"
   message:
     """
     NOTE: For this last step to work, you need to run eggNOG mapper separately and place
