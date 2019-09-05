@@ -7,6 +7,7 @@ rule index_STAR:
   threads: CPUS
   shell:
     """
+    mkdir -p {output}
     STAR --runThreadN {threads} \
          --runMode genomeGenerate \
          --genomeFastaFiles {input} \
