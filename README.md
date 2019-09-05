@@ -3,10 +3,21 @@
 
 This pipeline allows to reproduce the automatic annotation procedure used for he A. castellanii genome assembly. Most of the work is done using funannotate. Each step of the pipeline is run inside a singularity container. The only dependencies are python 3, snakemake and singularity.
 
+### Configuration
+
 There are 3 configuration files:
-  * config.yaml: General pipeline parameters as well as path to the output and temporary folders.
-  * samples.tsv: Assemblies to annotate.
-  * units.tsv: Describes input reads files to use for evidence during annotation.
+  * `config.yaml`: General pipeline parameters as well as path to the output and temporary folders.
+  * `samples.tsv`: Assemblies to annotate.
+  * `units.tsv`: Describes input reads files to use for evidence during annotation.
+
+### Usage
+
+If you have all input files in the right places, you can the pipeline with the following command:
+```python
+snakemake --use-singularity
+```
+
+### Description
 
 The pipeline works as follows:
   1. Clean the input assembly (rename headers, sort and filter scaffolds)
