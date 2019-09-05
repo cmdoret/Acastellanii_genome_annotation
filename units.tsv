@@ -1,0 +1,3 @@
+strain	unit	libtype	fq1	fq2
+Neff	1	rnaseq	input/SRR5192860_Acastellanii_neff_rnaseq.fastq
+C3	1	rnaseq	input/SRR5192860_Acastellanii_neff_rnaseq.fastq

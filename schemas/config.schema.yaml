@@ -1,0 +1,38 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: snakemake configuration file
+
+type: object
+
+properties:
+    samples:
+        type: string
+    units:
+        type: string
+    out_dir:
+        type: string
+    tmp_dir:
+        type: string
+    n_cpus:
+        type: number
+    remote:
+        type: object
+        properties:
+            provider:
+                type: string
+                description: where to fetch input files. can be local, SFTP or GS.
+            bucket:
+                type: string
+                description: bucket name if using GS, of base path of data folder if using SFTP
+            host:
+              type: string
+              description: hostname to connect to when using SFTP
+            username:
+              type: string
+              description: username for SFTP connections
+            ssh_key:
+              type: string
+              description: path to the public key to use for sSFTP connections
+            password:
+              type: string
+              description: password for SFTP connections, if a key is not provided

@@ -1,0 +1,14 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: an entry in the sample sheet
+properties:
+    strain:
+        type: string
+        description: Strain of Acanthamoeba castellanii
+    genome:
+        type: string
+        description: path to the input genome in fasta format
+
+required:
+    - strain
+    - genome

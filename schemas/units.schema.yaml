@@ -1,0 +1,25 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+
+description: row of the units.tsv, representing a sequencing unit, i.e. single-end or paired end data.
+type: object
+properties:
+    strain:
+        type: string
+        description: name of the Acanthamoeba castellanii strain
+    unit:
+        type: string
+        description: unit id
+    libtype:
+        type: string
+        description: type of genomic library. For example Hi-C, shotgun.
+    fq1:
+        type: string
+        description: path to the first FASTQ file
+    fq2:
+        type: string
+        description: path to the second FASTQ file
+required:
+    - strain
+    - unit
+    - libtype
+    - fq1

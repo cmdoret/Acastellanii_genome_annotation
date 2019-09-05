@@ -1,0 +1,20 @@
+
+# Description of samples
+samples  : samples.tsv
+# Description of sequencing units (libraries, resequencing, ...)
+units    : units.tsv
+
+# Default path for generated files
+out_dir  : out
+tmp_dir  : tmp
+
+n_cpus   : 12
+
+remote:
+  provider   : "local"
+  bucket     : "/pasteur/scratch/users/cmatthey/Acastellanii_hybrid_assembly"
+  host       : "tars.pasteur.fr"
+  username   : "cmatthey"
+  ssh_key    : "/home/cmatthey/.ssh/tars_rsa"
+  password   : ""
+
