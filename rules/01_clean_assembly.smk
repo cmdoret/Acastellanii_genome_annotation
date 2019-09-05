@@ -3,7 +3,7 @@
 rule clean_assembly:
   input: lambda w: samples.genome[samples.index== f'{w.strain}']
   output: join(TMP, 'clean', '01_{strain}_clean.fa')
-  singularity: "docker://cmdoret/funannotate:1.5.3"
+  singularity: "docker://cmdoret/funannotate:1.6.0"
   threads: CPUS
   shell:
     """
@@ -13,7 +13,7 @@ rule clean_assembly:
 rule sort_assembly:
   input: join(TMP, 'clean', '01_{strain}_clean.fa')
   output: join(TMP, 'clean', '02_{strain}_sorted.fa')
-  singularity: "docker://cmdoret/funannotate:1.5.3"
+  singularity: "docker://cmdoret/funannotate:1.6.0"
   shell:
     """
     funannotate sort -i {input} \
@@ -23,7 +23,7 @@ rule sort_assembly:
 rule mask_assembly:
   input: join(TMP, 'clean', '02_{strain}_sorted.fa')
   output: join(TMP, 'clean', '03_{strain}_masked.fa')
-  singularity: "docker://cmdoret/funannotate:1.5.3"
+  singularity: "docker://cmdoret/funannotate:1.6.0"
   threads: CPUS
   shell:
     """

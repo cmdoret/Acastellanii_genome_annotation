@@ -13,7 +13,7 @@ There are 3 configuration files:
 ### Usage
 
 If you have all input files in the right places, you can the pipeline with the following command:
-```python
+```bash
 snakemake --use-singularity
 ```
 
