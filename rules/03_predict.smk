@@ -7,7 +7,7 @@ rule predict:
     ref = join(TMP, 'clean', '03_{strain}_masked.fa')
   output: directory(join(TMP, 'predict', '{strain}'))
   threads: CPUS
-  singularity: "docker://cmdoret/funannotate:1.6.0"
+  singularity: config['containers']['funannotate']
   shell:
     """
     funannotate predict -i {input.ref} \
@@ -25,7 +25,7 @@ rule predict:
 rule remote:
   input: join(TMP, 'predict', '{strain}')
   output: join(TMP, 'annotate_{strain}.done')
-  singularity: "docker://cmdoret/funannotate:1.6.0"
+  singularity: config['containers']['funannotate']
   shell:
     """
     funannotate remote -m interproscan phobius -e cmatthey@pasteur.fr -i {input}/predict_results/

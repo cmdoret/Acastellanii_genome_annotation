@@ -18,3 +18,8 @@ remote:
   ssh_key    : "/home/cmatthey/.ssh/tars_rsa"
   password   : ""
 
+containers:
+  funannotate : "docker://cmdoret/funannotate:1.6.0"
+  star        : "docker://cmdoret/star:2.5.4a--0"
+  trinity     : "docker://biocontainers/trinityrnaseq:v2.2.0dfsg-2b1-deb_cv1"
+  samtools    : "docker://biocontainers/samtools:v1.7.0_cv4"

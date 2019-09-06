@@ -22,6 +22,8 @@ CPUS = config['n_cpus']
 TMP = config['tmp_dir']
 OUT = config['out_dir']
 
+
+
 ## WILDCARD CONSTRAINTS
 wildcard_constraints:
   strain="|".join(samples.index),

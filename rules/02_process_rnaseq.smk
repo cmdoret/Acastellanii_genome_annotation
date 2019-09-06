@@ -3,7 +3,7 @@
 rule index_STAR:
   input: join(TMP, 'clean', '03_{strain}_masked.fa')
   output: directory(join(TMP, 'STAR', '{strain}_genomedir'))
-  singularity: 'docker://cmdoret/star:2.5.4a--0'
+  singularity: config['containers']['star']
   threads: CPUS
   shell:
     """
@@ -19,7 +19,7 @@ rule align_STAR:
     genomedir = join(TMP, 'STAR', '{strain}_genomedir'),
     reads = units.fq1
   output: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
-  singularity: 'docker://cmdoret/star:2.5.4a--0'
+  singularity: config['containers']['star']
   threads: CPUS
   params:
     prefix = join(TMP, 'STAR', '{strain}_rna')
@@ -34,7 +34,7 @@ rule align_STAR:
 rule sort_bam:
   input: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   output: join(TMP, 'STAR', '{strain}_rna.bam')
-  singularity: 'docker://biocontainers/samtools:v1.7.0_cv4'
+  singularity: config['containers']['samtools']
   threads: CPUS
   shell:
     """
@@ -44,7 +44,7 @@ rule sort_bam:
 rule index_bam:
   input: join(TMP, 'STAR', '{strain}_rna.bam') 
   output: join(TMP, 'STAR', '{strain}_rna.bai')
-  singularity: 'docker://biocontainers/samtools:v1.7.0_cv4'
+  singularity: config['containers']['samtools']
   threads: CPUS
   shell:
     """
@@ -54,7 +54,7 @@ rule index_bam:
 rule transcriptome_assembly:
   input: join(TMP, 'STAR', '{strain}_rna.bam')
   output: directory(join(TMP, 'trinity', '{strain}'))
-  singularity: "docker://biocontainers/trinityrnaseq:v2.2.0dfsg-2b1-deb_cv1"
+  singularity: config['containers']['trinity']
   threads: CPUS
   shell:
     """
