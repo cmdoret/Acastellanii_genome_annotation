@@ -18,7 +18,7 @@ rule align_STAR:
   input:
     genomedir = join(TMP, 'STAR', '{strain}_genomedir'),
     reads = units.fq1
-  output: join(TMP, 'STAR', '{strain}_rna.out.sam')
+  output: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   singularity: 'docker://cmdoret/star:2.5.4a--0'
   threads: CPUS
   params:
@@ -32,7 +32,7 @@ rule align_STAR:
     """
 
 rule sort_bam:
-  input: join(TMP, 'STAR', '{strain}_rna.out.sam')
+  input: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   output: join(TMP, 'STAR', '{strain}_rna.bam')
   singularity: 'docker://biocontainers/samtools:v1.7.0_cv4'
   threads: CPUS

@@ -1,9 +1,15 @@
 # Predict genes using RNAseq data with AUGUSTUS and BRAKER via funannotate.
 
+rule setup:
+  output: touch(join(TMP, 'busco.flag'))
+  singularity: "docker://cmdoret/funannotate:1.6.0"
+  shell: "funannotate setup -b eukaryota"
+
 rule predict:
   input:
     bam = join(TMP, 'STAR', '{strain}_rna.bam'),
-    ref = join(TMP, 'clean', '03_{strain}_masked.fa')
+    ref = join(TMP, 'clean', '03_{strain}_masked.fa'),
+    busco_flag = join(TMP, 'busco.flag')
   output: directory(join(TMP, 'predict', '{strain}'))
   threads: CPUS
   singularity: "docker://cmdoret/funannotate:1.6.0"
