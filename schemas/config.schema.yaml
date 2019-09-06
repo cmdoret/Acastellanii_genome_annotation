@@ -36,3 +36,15 @@ properties:
             password:
               type: string
               description: password for SFTP connections, if a key is not provided
+    containers:
+        type: object
+        description: url of the containers used in the pipeline
+        properties:
+            funannotate:
+              type: string
+            samtools:
+              type: string
+            star:
+              type: string
+            trinity:
+              type: string

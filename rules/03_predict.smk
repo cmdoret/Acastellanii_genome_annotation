@@ -5,16 +5,18 @@ rule predict:
   input:
     bam = join(TMP, 'STAR', '{strain}_rna.bam'),
     ref = join(TMP, 'clean', '03_{strain}_masked.fa')
-  output: directory(join(TMP, 'predict', '{strain}'))
+  output: directory(join(TMP, 'predict', '{strain}', 'predict_results'))
   threads: CPUS
   singularity: config['containers']['funannotate']
+  params:
+    predict_dir = join(TMP, 'predict', '{strain}', 'predict_results')
   shell:
     """
     funannotate predict -i {input.ref} \
                         --species "Acanthamoeba castellanii" \
                         --strain {wildcards.strain} \
                         --rna_bam {input.bam} \
-                        -o {output} \
+                        -o {params.predict_dir} \
                         --cpus {threads} \
                         --busco_db eukaryota \
                         --min_training_model 100 \
@@ -23,10 +25,10 @@ rule predict:
     """
 
 rule remote:
-  input: join(TMP, 'predict', '{strain}')
+  input: join(TMP, 'predict', '{strain}', 'predict_results')
   output: join(TMP, 'annotate_{strain}.done')
   singularity: config['containers']['funannotate']
   shell:
     """
-    funannotate remote -m interproscan phobius -e cmatthey@pasteur.fr -i {input}/predict_results/
+    funannotate remote -m interproscan phobius -e cmatthey@pasteur.fr -i {input}
     """
