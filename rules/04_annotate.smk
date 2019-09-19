@@ -10,7 +10,7 @@ rule annotate:
     predict_dir = lambda w: join(TMP, 'predict', f'{w.strain}', 'predict_results'),
     id = lambda w: f"Acanthamoeba_castellanii_{w.strain}",
     eggnog_fname = lambda w: f'{w.strain}.emapper.annotations',
-    ipr_fname = lambda w: f'Acanthamoeba_castellanii_{w.strain}',
+    ipr_fname = lambda w: f'Acanthamoeba_castellanii_{w.strain}.proteins.fa.xml',
     phobius_out = lambda w: join(TMP, 'predict', f'{w.strain}', 'annotate_misc', 'phobius.results.txt')
   threads: CPUS
   singularity: config['containers']['funannotate']
