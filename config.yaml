@@ -10,6 +10,7 @@ tmp_dir  : tmp
 
 n_cpus   : 12
 
+
 remote:
   provider   : "local"
   bucket     : "/pasteur/scratch/users/cmatthey/Acastellanii_hybrid_assembly"

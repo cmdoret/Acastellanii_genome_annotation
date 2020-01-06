@@ -38,7 +38,7 @@ rule predict:
 
 # Run functional annotation using phobius
 rule remote:
-  input: join(TMP, 'predict', '{strain}')
+  input: join(TMP, 'predict', '{strain}', 'predict_results')
   output: touch(join(TMP, 'remote_{strain}.done'))
   singularity: config['containers']['funannotate']
   shell:
@@ -49,7 +49,7 @@ rule remote:
 
 # Run functional annotation using interproscan
 rule interproscan:
-  input: join(TMP, 'predict', '{strain}')
+  input: join(TMP, 'predict', '{strain}', 'predict_results')
   output: directory(join(TMP, 'interproscan', '{strain}'))
   singularity: "docker://blaxterlab/interproscan:5.22-61.0"
   params:
@@ -63,16 +63,21 @@ rule interproscan:
 
 # Download databases required for eggnog_mapper
 rule download_eggnog_mapper_db:
-  output: join(TMP, 'emapper_db')
+  output: join(TMP, 'emapper_db', 'eggnog.db')
   singularity: "docker://golob/eggnog-mapper:2xx__bcw.0.3.1A"
-  shell: "download_eggnog_data.py -y --data_dir {output}"
+  shell:
+    """
+    eggdir=$(dirname {output})
+    mkdir -p $eggdir
+    download_eggnog_data.py -y --data_dir $eggdir
+    """
 
 
 # Run functional annotation using eggnog-mapper v2
 rule eggnog_mapper:
   input:
-    predict_dir = join(TMP, 'predict', '{strain}'),
-    data_dir = join(TMP, 'emapper_db')
+    predict_dir = join(TMP, 'predict', '{strain}', 'predict_results'),
+    eggnog_db = join(TMP, 'emapper_db', 'eggnog.db')
   output: directory(join(TMP, 'eggnog_mapper', '{strain}'))
   singularity: "docker://golob/eggnog-mapper:2xx__bcw.0.3.1A"
   threads: CPUS
@@ -83,10 +88,10 @@ rule eggnog_mapper:
   shell:
     """
     mkdir -p {output}
+    eggdir=$(dirname {input.eggnog_db})
     emapper.py -i {input.predict_dir}/{params.in_fname} \
                -m {params.mode} \
                --cpu {threads} \
                -o {params.out_prefix} \
-               --output_dir {output} \
-               --data_dir {input.data_dir}
+               --data_dir $eggdir \
     """
