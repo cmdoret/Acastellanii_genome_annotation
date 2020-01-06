@@ -11,7 +11,7 @@ import numpy as np
 configfile: "config.yaml"
 validate(config, schema="schemas/config.schema.yaml")
 
-samples = pd.read_csv(config["samples"], sep='\t').set_index("strain", drop=False)
+samples = pd.read_csv(config["samples"], comment='#', sep='\t').set_index("strain", drop=False)
 validate(samples, schema="schemas/samples.schema.yaml")
 
 units = pd.read_csv(config["units"], sep='\t', dtype=str).set_index(["strain", "unit"], drop=False)
@@ -21,6 +21,7 @@ units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]
 CPUS = config['n_cpus']
 TMP = config['tmp_dir']
 OUT = config['out_dir']
+
 
 
 
@@ -34,6 +35,7 @@ include: "rules/01_clean_assembly.smk"
 include: "rules/02_process_rnaseq.smk"
 include: "rules/03_predict.smk"
 include: "rules/04_annotate.smk"
+
 
 rule all:
   input: expand(join(OUT, '{strain}'), strain=samples.strain)
