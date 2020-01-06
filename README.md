@@ -10,6 +10,11 @@ There are 3 configuration files:
   * `samples.tsv`: Assemblies to annotate.
   * `units.tsv`: Describes input reads files to use for evidence during annotation.
 
+### Installation
+
+You need to install funannotate in conda and follow the instructions to setup the dependencies and $FUNANNOTATE_DB.
+Snakemake and singularity are also required to run the pipeline
+
 ### Usage
 
 If you have all input files in the right places, you can the pipeline with the following command:
@@ -29,19 +34,4 @@ The pipeline works as follows:
 NOTE: For now, RNAseq is used only for training AUGUSTUS. When RNAseq from C3 will be available, the de-novo assembled transcriptome will be used as direct evidence for both strains.
 
 ![Pipeline steps](docs/pipeline.svg)
-
-### Adding busco databases
-
-Only eukaryota and dikarya BUSCO databases are included in the container. To add more, you will need to add it to your container instance manually and use your custom version:
-
-```bash
-docker run -it cmdoret 
-funannotate setup -b <busco_db>
-exit
-docker commit <container_id> cmdoret/funannotate:1.6.0
-docker tag cmdoret/funannotate:1.6.0 <your_repo>/funannotate:1.6.0
-docker push <your_repo>/funannotate:1.6.0
-```
-
-You can then change the container url in config.yaml to `<your_repo>/funannotate:1.6.0`.
 
