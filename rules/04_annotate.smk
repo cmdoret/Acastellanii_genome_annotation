@@ -7,11 +7,12 @@ rule annotate:
     eggnog_mapper = join(TMP, 'eggnog_mapper', '{strain}')
   output: directory(join(OUT, '{strain}'))
   params:
-    predict_dir = lambda w: join(TMP, 'predict', f'{w.strain}', 'predict_results'),
+    predict_dir = lambda w: join(TMP, 'predict', f'{w.strain}', 'predict_results', 'predict_results'),
     id = lambda w: f"Acanthamoeba_castellanii_{w.strain}",
     eggnog_fname = lambda w: f'{w.strain}.emapper.annotations',
     ipr_fname = lambda w: f'Acanthamoeba_castellanii_{w.strain}.proteins.fa.xml',
-    phobius_out = lambda w: join(TMP, 'predict', f'{w.strain}', 'annotate_misc', 'phobius.results.txt')
+    phobius_out = lambda w: join(TMP, 'predict', f'{w.strain}', 'predict_results', 'annotate_misc', 'phobius.results.txt'),
+    sbt = config['ncbi_submit_template']
   threads: CPUS
   singularity: config['containers']['funannotate']
   message:
@@ -30,5 +31,6 @@ rule annotate:
       --busco_db eukaryota \
       --out {output} \
       --phobius {params.phobius_out} \
-      --iprscan {input.interproscan}/{params.ipr_fname}
+      --iprscan {input.interproscan}/{params.ipr_fname} \
+      --sbt {params.sbt}
     """

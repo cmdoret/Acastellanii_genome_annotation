@@ -93,5 +93,6 @@ rule eggnog_mapper:
                -m {params.mode} \
                --cpu {threads} \
                -o {params.out_prefix} \
+               --output_dir {output} \
                --data_dir $eggdir \
     """

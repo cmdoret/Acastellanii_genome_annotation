@@ -10,6 +10,7 @@ tmp_dir  : tmp
 
 n_cpus   : 12
 
+ncbi_submit_template : "input/metadata/template.sbt"
 
 remote:
   provider   : "local"
