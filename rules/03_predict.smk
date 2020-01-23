@@ -2,7 +2,6 @@
 
 rule export_augustus_config:
   output: directory(join('tmp', 'augustus', '{strain}', 'config'))
-  singularity: config['containers']['funannotate']
   shell:
     """
     mkdir -p {output}
@@ -17,7 +16,6 @@ rule predict:
     aug = join('tmp', 'augustus', '{strain}', 'config')
   output: directory(join(TMP, 'predict', '{strain}', 'predict_results'))
   threads: CPUS
-  singularity: config['containers']['funannotate']
   params:
     predict_dir = join(TMP, 'predict', '{strain}', 'predict_results')
   shell:
@@ -40,7 +38,6 @@ rule predict:
 rule remote:
   input: join(TMP, 'predict', '{strain}', 'predict_results')
   output: touch(join(TMP, 'remote_{strain}.done'))
-  singularity: config['containers']['funannotate']
   shell:
     """
     funannotate remote -m phobius -e cmatthey@pasteur.fr -i {input}
@@ -73,26 +70,3 @@ rule download_eggnog_mapper_db:
     """
 
 
-# Run functional annotation using eggnog-mapper v2
-rule eggnog_mapper:
-  input:
-    predict_dir = join(TMP, 'predict', '{strain}', 'predict_results'),
-    eggnog_db = join(TMP, 'emapper_db', 'eggnog.db')
-  output: directory(join(TMP, 'eggnog_mapper', '{strain}'))
-  singularity: "docker://golob/eggnog-mapper:2xx__bcw.0.3.1A"
-  threads: CPUS
-  params:
-    mode = 'diamond',
-    out_prefix = lambda w: f'{w.strain}',
-    in_fname = lambda w: join('predict_results', f'Acanthamoeba_castellanii_{w.strain}.proteins.fa')
-  shell:
-    """
-    mkdir -p {output}
-    eggdir=$(dirname {input.eggnog_db})
-    emapper.py -i {input.predict_dir}/{params.in_fname} \
-               -m {params.mode} \
-               --cpu {threads} \
-               -o {params.out_prefix} \
-               --output_dir {output} \
-               --data_dir $eggdir \
-    """
