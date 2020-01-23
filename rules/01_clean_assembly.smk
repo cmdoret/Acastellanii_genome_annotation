@@ -3,7 +3,6 @@
 rule clean_assembly:
   input: lambda w: samples.genome[samples.index== f'{w.strain}']
   output: join(TMP, 'clean', '01_{strain}_clean.fa')
-  singularity: config['containers']['funannotate']
   threads: CPUS
   shell:
     """
@@ -13,7 +12,6 @@ rule clean_assembly:
 rule sort_assembly:
   input: join(TMP, 'clean', '01_{strain}_clean.fa')
   output: join(TMP, 'clean', '02_{strain}_sorted.fa')
-  singularity: config['containers']['funannotate']
   shell:
     """
     funannotate sort -i {input} \
@@ -23,7 +21,6 @@ rule sort_assembly:
 rule mask_assembly:
   input: join(TMP, 'clean', '02_{strain}_sorted.fa')
   output: join(TMP, 'clean', '03_{strain}_masked.fa')
-  singularity: config['containers']['funannotate']
   threads: CPUS
   shell:
     """

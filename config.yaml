@@ -10,7 +10,9 @@ tmp_dir  : tmp
 
 n_cpus   : 12
 
-ncbi_submit_template : "docs/template.sbt"
+ncbi_submit_template :
+  C3   : "docs/template_C3.sbt"
+  Neff : "docs/template_Neff.sbt"
 
 remote:
   provider   : "local"
@@ -21,7 +23,6 @@ remote:
   password   : ""
 
 containers:
-  funannotate : "docker://cmdoret/funannotate:1.6.0"
   star        : "docker://cmdoret/star:2.5.4a--0"
   trinity     : "docker://biocontainers/trinityrnaseq:v2.2.0dfsg-2b1-deb_cv1"
   samtools    : "docker://biocontainers/samtools:v1.7.0_cv4"
