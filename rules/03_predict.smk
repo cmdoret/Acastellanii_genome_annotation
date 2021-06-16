@@ -1,19 +1,29 @@
 # Predict genes using RNAseq data with AUGUSTUS and BRAKER via funannotate.
 
-rule export_augustus_config:
-  output: directory(join('tmp', 'augustus', '{strain}', 'config'))
+# Use transcriptome assembly and PASA to generate gene structures which will
+# be given as evidence to funannotate predict.
+rule train:
+  input: join(TMP, 'clean', '03_{strain}_masked.fa')
+  output: directory(join(TMP, 'train', '{strain}'))
+  params:
+    fq = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
+  threads: CPUS
   shell:
     """
-    mkdir -p {output}
-    cp -r /home/linuxbrew/augustus/config/* {output}
+    funannotate train -i {input} \
+		      -s {params.fq} \
+                      -o {output} \
+		      --cpus {threads} \
+		      --strain {wildcards.strain} \
+		      --species "Acanthamoeba castellanii" \
+		      --memory 24G \
+		      --stranded R
     """
-
 
 rule predict:
   input:
     bam = join(TMP, 'STAR', '{strain}_rna.bam'),
-    ref = join(TMP, 'clean', '03_{strain}_masked.fa'),
-    aug = join('tmp', 'augustus', '{strain}', 'config')
+    ref = join(TMP, 'clean', '03_{strain}_masked.fa')
   output: directory(join(TMP, 'predict', '{strain}', 'predict_results'))
   threads: CPUS
   params:
@@ -21,8 +31,8 @@ rule predict:
   shell:
     """
     funannotate predict -i {input.ref} \
-                        --AUGUSTUS_CONFIG_PATH={input.aug} \
                         --species "Acanthamoeba castellanii" \
+			--organism other \
                         --strain {wildcards.strain} \
                         --rna_bam {input.bam} \
                         -o {params.predict_dir} \
@@ -33,35 +43,29 @@ rule predict:
                         --optimize_augustus
     """
 
-
 # Run functional annotation using phobius
 rule remote:
   input: join(TMP, 'predict', '{strain}', 'predict_results')
-  output: touch(join(TMP, 'remote_{strain}.done'))
+  output: touch(join(TMP, '{strain}_remote.done'))
   shell:
     """
     funannotate remote -m phobius -e cmatthey@pasteur.fr -i {input}
     """
 
-
 # Run functional annotation using interproscan
 rule interproscan:
   input: join(TMP, 'predict', '{strain}', 'predict_results')
-  output: directory(join(TMP, 'interproscan', '{strain}'))
-  singularity: "docker://blaxterlab/interproscan:5.22-61.0"
-  params:
-    in_fname = lambda w: join('predict_results', f'Acanthamoeba_castellanii_{w.strain}.proteins.fa')
+  output: join(TMP, '{strain}_interproscan.xml')
   shell:
     """
-    mkdir -p {output}
-    interproscan.sh -i {input}/{params.in_fname} -d {output}
+    funannotate iprscan -m docker --cpus 12 -i {input} -o {output}
     """
-
 
 # Download databases required for eggnog_mapper
 rule download_eggnog_mapper_db:
-  output: join(TMP, 'emapper_db', 'eggnog.db')
+  output: touch(join(TMP, 'emapper_db', 'eggnog.done'))
   singularity: "docker://golob/eggnog-mapper:2xx__bcw.0.3.1A"
+  message: "Downloading eggnog database to {output}"
   shell:
     """
     eggdir=$(dirname {output})
