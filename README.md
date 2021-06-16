@@ -30,8 +30,8 @@ The pipeline works as follows:
   1. Clean the input assembly (rename headers, sort and filter scaffolds)
   2. Soft mask repeats from the assembly
   3. Use RNAseq data to predict genes with AUGUSTUS
-  4. Use remote services for functional annotations
-  5. Combine functional annotations from different sources.
+  4. Use remote services for functional annotations (Eggnog-mapper, interproscan, phobius) 
+  5. Combine functional annotations from the different sources.
 
 NOTE: For now, RNAseq is used only for training AUGUSTUS. When RNAseq from C3 will be available, the de-novo assembled transcriptome will be used as direct evidence for both strains.
 

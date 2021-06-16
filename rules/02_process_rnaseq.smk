@@ -16,18 +16,18 @@ rule index_STAR:
 
 rule align_STAR:
   input:
-    genomedir = join(TMP, 'STAR', '{strain}_genomedir'),
-    reads = units.fq1
+    genomedir = join(TMP, 'STAR', '{strain}_genomedir')
   output: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   singularity: config['containers']['star']
   threads: CPUS
   params:
-    prefix = join(TMP, 'STAR', '{strain}_rna')
+    prefix = join(TMP, 'STAR', '{strain}_rna'),
+    reads = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
   shell:
     """
     STAR --runThreadN {threads} \
          --genomeDir {input.genomedir} \
-         --readFilesIn {input.reads} \
+         --readFilesIn <(gzip -dc {params.reads}) \
          --outFileNamePrefix {params.prefix}
     """
 
