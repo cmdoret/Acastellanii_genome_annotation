@@ -25,9 +25,12 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 export EGGNOG_DATA_DIR="$PWD/tmp/emapper_db/"
+mkdir -p "$OUT_DIR"
 
+# Extract protein fasta from genome + gff
+funannotate util gff2prot -g "$GFF" -f "$FASTA" | sed 's/\*//g' > "${OUT_DIR}/proteins.fa"
 # Generate interproscan annotations
-funannotate iprscan -m docker -i "$FASTA" -c 12 -o "$OUT_DIR/iprscan.xml"
+funannotate iprscan -m docker -i "${OUT_DIR}/proteins.fa" -c 12 -o "${OUT_DIR}/iprscan.xml"
 # Combine functional annotations from interpro, eggnog, phobius, Pfam, UniProtKB, MEROPS, CAZyme, and GO ontology.
 funannotate annotate \
 	--gff "$GFF" \
