@@ -28,9 +28,9 @@ export EGGNOG_DATA_DIR="$PWD/tmp/emapper_db/"
 mkdir -p "$OUT_DIR"
 
 # Extract protein fasta from genome + gff and remove stop codons
-#funannotate util gff2prot --no_stop -g "$GFF" -f "$FASTA" | sed 's/\*//g' > "${OUT_DIR}/proteins.fa"
+funannotate util gff2prot --no_stop -g "$GFF" -f "$FASTA" | sed 's/\*//g' > "${OUT_DIR}/proteins.fa"
 # Generate interproscan annotations
-#funannotate iprscan -m docker -i "${OUT_DIR}/proteins.fa" -c 12 -o "${OUT_DIR}/iprscan.xml"
+funannotate iprscan -m docker -i "${OUT_DIR}/proteins.fa" -c 12 -o "${OUT_DIR}/iprscan.xml"
 # Run phobius locally without funannotate on proteins with trimmed stop codons.
 # If fd and seqkit are available, phobius is run in parallel on each protein
 if command -v fd seqkit &> /dev/null; then
