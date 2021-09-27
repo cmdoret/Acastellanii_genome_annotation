@@ -1,7 +1,7 @@
 ## Acanthamoeba castellanii genome annotation
 *cmdoret, 20190905*
 
-This pipeline allows to reproduce the automatic annotation procedure used for he A. castellanii genome assembly. Most of the work is done using [funannotate](https://github.com/nextgenusfs/funannotate). Each step of the pipeline is run inside a singularity container. The only dependencies are python 3, snakemake and singularity.
+This pipeline allows to reproduce the automatic annotation procedure used for the A. castellanii genome assembly. Most of the work is done using [funannotate](https://github.com/nextgenusfs/funannotate). Each step of the pipeline is run inside a singularity container. The only dependencies are python 3, funannotate snakemake and singularity.
 
 ### Configuration
 
@@ -19,9 +19,9 @@ Snakemake and singularity are also required to run the pipeline.
 
 ### Usage
 
-If you have all input files in the right places, you can the pipeline with the following command:
+If you funannotate is available in your cuurrent conda environment, you can the pipeline with the following command:
 ```bash
-snakemake --use-singularity
+snakemake --use-singularity -j4
 ```
 
 ### Description
