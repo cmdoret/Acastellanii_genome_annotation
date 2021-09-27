@@ -4,6 +4,7 @@ rule index_STAR:
   input: join(TMP, 'clean', '03_{strain}_masked.fa')
   output: directory(join(TMP, 'STAR', '{strain}_genomedir'))
   singularity: config['containers']['star']
+  conda: '../envs/rnaseq.yaml'
   threads: CPUS
   shell:
     """
@@ -20,6 +21,7 @@ rule align_STAR:
     reads = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
   output: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   singularity: config['containers']['star']
+  conda: '../envs/rnaseq.yaml'
   threads: CPUS
   params:
     prefix = join(TMP, 'STAR', '{strain}_rna'),
@@ -57,6 +59,7 @@ rule transcriptome_assembly:
   input: join(TMP, 'STAR', '{strain}_rna.bam')
   output: directory(join(TMP, 'trinity', '{strain}'))
   singularity: config['containers']['trinity']
+  conda: '../envs/rnaseq.yaml'
   threads: CPUS
   shell:
     """
