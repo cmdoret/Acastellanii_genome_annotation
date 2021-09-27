@@ -1,3 +1,3 @@
-strain	unit	libtype	fq1	fq2
-Neff	1	rnaseq	input/SRR5192860_Acastellanii_neff_rnaseq.fq.gz
-C3	1	rnaseq	input/CM62.fq.gz	
+strain	unit	libtype	sra	fq1	fq2
+Neff	1	rnaseq	SRR5192860	fq/Neff/rnaseq/SRR5192860_Acastellanii_neff_rnaseq.fastq.gz
+C3	1	rnaseq	SRR15928350	fq/C3/rnaseq/CM62.fastq.gz

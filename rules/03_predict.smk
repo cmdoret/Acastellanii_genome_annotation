@@ -3,16 +3,17 @@
 # Use transcriptome assembly and PASA to generate gene structures which will
 # be given as evidence to funannotate predict.
 rule train:
-  input: join(TMP, 'clean', '03_{strain}_masked.fa')
+  input:
+    fq = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0],
+    fa = join(TMP, 'clean', '03_{strain}_masked.fa')
   output: directory(join(TMP, 'train', '{strain}'))
-  params:
-    fq = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
   threads: CPUS
   shell:
     """
-    funannotate train -i {input} \
-		      -s {params.fq} \
-                      -o {output} \
+    funannotate train \
+          -i {input.fa} \
+		      -s {input.fq} \
+          -o {output} \
 		      --cpus {threads} \
 		      --strain {wildcards.strain} \
 		      --species "Acanthamoeba castellanii" \

@@ -16,18 +16,18 @@ rule index_STAR:
 
 rule align_STAR:
   input:
-    genomedir = join(TMP, 'STAR', '{strain}_genomedir')
+    genomedir = join(TMP, 'STAR', '{strain}_genomedir'),
+    reads = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
   output: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   singularity: config['containers']['star']
   threads: CPUS
   params:
     prefix = join(TMP, 'STAR', '{strain}_rna'),
-    reads = lambda w: units.loc[units.strain == w.strain, 'fq1'].tolist()[0]
   shell:
     """
     STAR --runThreadN {threads} \
          --genomeDir {input.genomedir} \
-         --readFilesIn <(gzip -dc {params.reads}) \
+         --readFilesIn <(gzip -dc {input.reads}) \
          --outFileNamePrefix {params.prefix}
     """
 
@@ -35,6 +35,7 @@ rule sort_bam:
   input: join(TMP, 'STAR', '{strain}_rnaAligned.out.sam')
   output: join(TMP, 'STAR', '{strain}_rna.bam')
   singularity: config['containers']['samtools']
+  conda: '../envs/align.yaml'
   threads: CPUS
   shell:
     """
@@ -45,6 +46,7 @@ rule index_bam:
   input: join(TMP, 'STAR', '{strain}_rna.bam') 
   output: join(TMP, 'STAR', '{strain}_rna.bai')
   singularity: config['containers']['samtools']
+  conda: '../envs/align.yaml'
   threads: CPUS
   shell:
     """
