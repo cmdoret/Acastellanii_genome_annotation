@@ -28,12 +28,12 @@ rule sra_dl_fq:
     echo "SRA download to ${{trim}}"
 
     # Download SRA file
-    prefetch -p -o "{params.acc}.sra" "{params.acc}"
+    prefetch --max-size 100G -p -o "./fq/{params.acc}.sra" "{params.acc}"
     
     # Convert to fastq locally and compress
-    fasterq-dump -e {threads} "./{params.acc}.sra" -o $trim
+    fasterq-dump -e {threads} "./fq/{params.acc}.sra" -o $trim
     rm "{params.acc}.sra"
-    gzip ${{trim}}*fastq
+    gzip ${{trim}}
     """
 
 # Download databases required for eggnog_mapper
