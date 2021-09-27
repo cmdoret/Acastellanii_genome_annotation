@@ -35,3 +35,16 @@ rule sra_dl_fq:
     rm "{params.acc}.sra"
     gzip ${{trim}}*fastq
     """
+
+# Download databases required for eggnog_mapper
+rule download_eggnog_mapper_db:
+  output: touch(join(TMP, 'emapper_db', 'eggnog.done'))
+  singularity: "docker://golob/eggnog-mapper:2xx__bcw.0.3.1A"
+  conda: "../envs/eggnog_mapper.yaml"
+  message: "Downloading eggnog database to {output}"
+  shell:
+    """
+    eggdir=$(dirname {output})
+    mkdir -p $eggdir
+    download_eggnog_data.py -y --data_dir $eggdir
+    """
