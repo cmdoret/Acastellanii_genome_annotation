@@ -31,8 +31,8 @@ rule sra_dl_fq:
     prefetch --max-size 100G -p -o "./fq/{params.acc}.sra" "{params.acc}"
     
     # Convert to fastq locally and compress
-    fasterq-dump -e {threads} "./fq/{params.acc}.sra" -o $trim
-    rm "{params.acc}.sra"
+    fasterq-dump -f -t ./fq -e {threads} "./fq/{params.acc}.sra" -o $trim
+    rm -f "./fq/{params.acc}.sra"
     gzip ${{trim}}
     """
 
