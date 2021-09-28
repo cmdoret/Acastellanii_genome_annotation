@@ -11,14 +11,14 @@ rule train:
   shell:
     """
     funannotate train \
-          -i {input.fa} \
-		      -s {input.fq} \
-          -o {output} \
-		      --cpus {threads} \
-		      --strain {wildcards.strain} \
-		      --species "Acanthamoeba castellanii" \
-		      --memory 24G \
-		      --stranded R
+      -i {input.fa} \
+		  -s {input.fq} \
+      -o {output} \
+		  --cpus {threads} \
+		  --strain {wildcards.strain} \
+		  --species "Acanthamoeba castellanii" \
+		  --memory 24G \
+		  --stranded R
     """
 
 rule predict:
@@ -31,17 +31,18 @@ rule predict:
     predict_dir = join(TMP, 'predict', '{strain}', 'predict_results')
   shell:
     """
-    funannotate predict -i {input.ref} \
-                        --species "Acanthamoeba castellanii" \
+    funannotate predict \
+      -i {input.ref} \
+      --species "Acanthamoeba castellanii" \
 			--organism other \
-                        --strain {wildcards.strain} \
-                        --rna_bam {input.bam} \
-                        -o {params.predict_dir} \
-                        --cpus {threads} \
-                        --busco_db eukaryota \
-                        --min_training_model 100 \
-                        --ploidy 2 \
-                        --optimize_augustus
+      --strain {wildcards.strain} \
+      --rna_bam {input.bam} \
+      -o {params.predict_dir} \
+      --cpus {threads} \
+      --busco_db eukaryota \
+      --min_training_model 100 \
+      --ploidy 2 \
+      --optimize_augustus
     """
 
 # Run functional annotation using phobius
