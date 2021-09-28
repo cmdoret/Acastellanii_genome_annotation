@@ -28,7 +28,7 @@ rule sra_dl_fq:
     echo "SRA download to ${{trim}}"
 
     # Download SRA file
-    prefetch --max-size 100G -p -o "./fq/{params.acc}.sra" "{params.acc}"
+    prefetch -t ./fq --max-size 100G -p -o "./fq/{params.acc}.sra" "{params.acc}"
     
     # Convert to fastq locally and compress
     fasterq-dump -f -t ./fq -e {threads} "./fq/{params.acc}.sra" -o $trim
