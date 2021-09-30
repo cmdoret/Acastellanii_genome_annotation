@@ -1,7 +1,11 @@
 ## Acanthamoeba castellanii genome annotation
 *cmdoret, 20190905*
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5541742.svg)](https://doi.org/10.5281/zenodo.5541742)
+
 This pipeline allows to reproduce the automatic annotation procedure used for the A. castellanii genome assembly. Most of the work is done using [funannotate](https://github.com/nextgenusfs/funannotate). Each step of the pipeline is run inside a singularity container. The only dependencies are python>=3.7, funannotate, snakemake and conda.
+
+The associated Zenodo record holds a frozen copy of the repository as well as the input and output data. The input data (genome assemblies used in the publication) are automatically downloaded from Zenodo upon execution of the pipeline.
 
 ### Configuration
 
