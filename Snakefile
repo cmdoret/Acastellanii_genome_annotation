@@ -19,6 +19,8 @@ units = pd.read_csv(config["units"], sep='\t', dtype=str).set_index(["strain", "
 units.index = units.index.set_levels([i.astype(str) for i in units.index.levels])
 
 CPUS = config['n_cpus']
+IN = join('input')
+SHARED = join(IN, 'shared_assets')
 TMP = config['tmp_dir']
 OUT = config['out_dir']
 

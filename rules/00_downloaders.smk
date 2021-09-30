@@ -48,3 +48,19 @@ rule download_eggnog_mapper_db:
     mkdir -p $eggdir
     download_eggnog_data.py -y --data_dir $eggdir
     """
+
+# Download data assets from zenodo record
+rule get_zenodo_assets:
+  output:
+    expand(join(SHARED, 'genomes', '{strain}_assembly.fa'), strain=['Neff', 'C3']),
+    url_tbl = join(TMP, 'zenodo_urls.tsv')
+  conda: '../envs/zenodo_get.yaml'
+  priority: 100
+  params:
+    in_dir = IN
+  shell:
+    """
+    zenodo_get -d https://doi.org/10.5281/zenodo.5507417 -w {output.url_tbl}
+    wget $(grep "shared_assets" {output.url_tbl}) -O - \
+     | tar xzvf - --directory={params.in_dir} >/dev/null
+    """

@@ -14,14 +14,6 @@ ncbi_submit_template :
   C3   : "docs/template_C3.sbt"
   Neff : "docs/template_Neff.sbt"
 
-remote:
-  provider   : "local"
-  bucket     : "/pasteur/scratch/users/cmatthey/Acastellanii_hybrid_assembly"
-  host       : "tars.pasteur.fr"
-  username   : "cmatthey"
-  ssh_key    : "/home/cmatthey/.ssh/tars_rsa"
-  password   : ""
-
 containers:
   star        : "docker://cmdoret/star:2.5.4a--0"
   trinity     : "docker://biocontainers/trinityrnaseq:v2.2.0dfsg-2b1-deb_cv1"
