@@ -11,7 +11,7 @@ def lib_to_sra(wildcards):
     sra = units.sra[mask].values[0]
   return sra
 
-
+# Only works for single end data
 rule sra_dl_fq:
   message: "Getting {params.acc} into {output}"
   output: join('fq', '{strain}','{libtype}', '{libname}')
