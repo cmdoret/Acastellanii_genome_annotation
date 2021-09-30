@@ -35,5 +35,5 @@ The pipeline works as follows:
 
 NOTE: For now, RNAseq is used only for training AUGUSTUS. When RNAseq from C3 will be available, the de-novo assembled transcriptome will be used as direct evidence for both strains.
 
-![Pipeline steps](docs/pipeline.svg)
+![Pipeline steps](docs/rulegraph.svg)
 
