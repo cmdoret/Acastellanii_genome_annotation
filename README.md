@@ -16,10 +16,9 @@ There are 3 configuration files:
 
 ### Installation
 
-You need to install funannotate in conda and follow the instructions to setup the dependencies and $FUNANNOTATE_DB.
-Snakemake and conda are also required to run the pipeline. 
+Funannotate must be installed in the current conda environment and setup according to the official instructions (including setting the $FUNANNOTATE_DB variable). Snakemake >=5.5 is also required to run the pipeline. 
 
-[Eggnog-mapper](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2#Installation) and [interpsoscan](https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload) should also be installed on the system as they will be used by funannotate to improve the annotations.
+[Eggnog-mapper](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2#Installation) and [interpsoscan](https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload) should also be available as they will be called by funannotate to improve the annotations.
 
 ### Usage
 
