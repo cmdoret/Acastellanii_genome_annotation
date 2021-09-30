@@ -31,6 +31,7 @@ wildcard_constraints:
   libtype="|".join(np.unique(units.libtype))
 
 ## PIPELINE
+include: 'rules/00_downloaders.smk'
 include: "rules/01_clean_assembly.smk"
 include: "rules/02_process_rnaseq.smk"
 include: "rules/03_predict.smk"
